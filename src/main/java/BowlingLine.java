@@ -20,8 +20,13 @@ public class BowlingLine {
         this.nextLine = nextLine;
     }
 
+    public List<BowlingThrow> getThrowList() {
+        return throwList;
+    }
+
     int requireNextTwoThrowsScores(int MAX_PINS) {
-        if (throwList.size() < 2 && nextLine != null) {
+        if (throwList.size() < 2) {
+            // next line or append line not null
             return MAX_PINS + nextLine.requireNextThrowScore();
         } else {
             return throwList.get(0).getScore() + throwList.get(1).getScore();
@@ -30,14 +35,6 @@ public class BowlingLine {
 
     int requireNextThrowScore() {
         return throwList.get(0).getScore();
-    }
-
-    int sumOfThrows() {
-        int sum = 0;
-        for (BowlingThrow bowlingThrow : throwList) {
-            sum += bowlingThrow.getScore();
-        }
-        return sum;
     }
 
     boolean isStrike(int MAX_PINS) {

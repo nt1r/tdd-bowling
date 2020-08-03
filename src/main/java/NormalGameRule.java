@@ -1,18 +1,34 @@
 public class NormalGameRule extends GameRule {
     public NormalGameRule() {
-        this.MAX_LINES = 10;
-        this.MAX_PINS = 10;
+        this.MAX_LINES_PER_GAME = 10;
+        this.MAX_PINS_PER_LINE = 10;
+        this.MAX_THROWS_PER_LINE = 2;
     }
 
     @Override
     public int getLineScore(BowlingLine bowlingLine) {
-        if (bowlingLine.isStrike(MAX_PINS)) {
-            // assert bowlingLine.getNextLine() != null;
-            return MAX_PINS + bowlingLine.getNextLine().requireNextTwoThrowsScores(MAX_PINS);
-        } else if (bowlingLine.isSpare(MAX_PINS)) {
-            return MAX_PINS + bowlingLine.getNextLine().requireNextThrowScore();
+        if (bowlingLine.isStrike(MAX_PINS_PER_LINE)) {
+            if (isBowlingLineHasExtendThrow(bowlingLine)) {
+                return sumLinesDownPins(bowlingLine);
+            } else {
+                return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextTwoThrowsScores(MAX_PINS_PER_LINE);
+            }
+        } else if (bowlingLine.isSpare(MAX_PINS_PER_LINE)) {
+            return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextThrowScore();
         } else {
-            return bowlingLine.sumOfThrows();
+            return sumLinesDownPins(bowlingLine);
         }
+    }
+
+    private boolean isBowlingLineHasExtendThrow(BowlingLine bowlingLine) {
+        return bowlingLine.getThrowList().size() > MAX_THROWS_PER_LINE;
+    }
+
+    private int sumLinesDownPins(BowlingLine bowlingLine) {
+        int sum = 0;
+        for (BowlingThrow bowlingThrow : bowlingLine.getThrowList()) {
+            sum += bowlingThrow.getScore();
+        }
+        return sum;
     }
 }

@@ -7,16 +7,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BowlingGameTest {
-    private final String allThrowZerosInputFilePath = "/Users/leqi/TWU_In-term/Week1-Day1/TDD_Fundamentals/tdd-bowling/src/test/java/data/all_throw_zeros.txt";
-    private final String allThrowOnesInputFilePath = "/Users/leqi/TWU_In-term/Week1-Day1/TDD_Fundamentals/tdd-bowling/src/test/java/data/all_throw_ones.txt";
-    private final String strikeNotTheLastInputFilePath = "/Users/leqi/TWU_In-term/Week1-Day1/TDD_Fundamentals/tdd-bowling/src/test/java/data/strike_not_the_last.txt";
+    private final String allThrowZerosInputFilePath = "src/test/java/data/all_throw_zeros.txt";
+    private final String allThrowOnesInputFilePath = "src/test/java/data/all_throw_ones.txt";
+    private final String strikeNotTheLastInputFilePath = "src/test/java/data/strike_not_the_last.txt";
+    private final String strikeInTheLastInputFilePath = "src/test/java/data/strike_in_the_last.txt";
+    private final String strikeContinuousInputFilePath = "src/test/java/data/strike_continuous.txt";
+    private final String pinsAllDownInputFilePath = "src/test/java/data/all_pins_down.txt";
 
     BowlingGame bowlingGame;
     GameRule gameRule = new NormalGameRule();
 
 
     @BeforeEach
-    private void initGame() {
+    private void clearGame() {
         if (bowlingGame != null) {
             bowlingGame.clear();
         }
@@ -25,8 +28,7 @@ public class BowlingGameTest {
     @Test
     public void should_get_zero_when_all_throws_are_zeros() {
         // Given
-        List<List<Integer>> downPinsListAllZeros = BowlInputFileReader.readDownPinsListFromFile(allThrowZerosInputFilePath);
-        bowlingGame = new BowlingGame(gameRule, downPinsListAllZeros);
+        initBowlGameWithFile(allThrowZerosInputFilePath);
 
         // When
         int actualScores = bowlingGame.calculateTotalLinesScore();
@@ -39,9 +41,7 @@ public class BowlingGameTest {
     @Test
     public void should_get_twenty_when_all_throws_are_one() {
         // Given
-        List<List<Integer>> downPinsListAllOnes = BowlInputFileReader.readDownPinsListFromFile(allThrowOnesInputFilePath);
-        // System.out.println(BowlInputFileReader.outputDebug(downPinsListAllOnes));
-        bowlingGame = new BowlingGame(gameRule, downPinsListAllOnes);
+        initBowlGameWithFile(allThrowOnesInputFilePath);
 
         // When
         int actualScores = bowlingGame.calculateTotalLinesScore();
@@ -52,10 +52,9 @@ public class BowlingGameTest {
     }
 
     @Test
-    public void should_get_right_when_throw_contains_strike_not_contains_spare() {
+    public void when_throws_contains_strike_not_contains_spare() {
         // Given
-        List<List<Integer>> downPinsListStrikeNotTheLast = BowlInputFileReader.readDownPinsListFromFile(strikeNotTheLastInputFilePath);
-        bowlingGame = new BowlingGame(gameRule, downPinsListStrikeNotTheLast);
+        initBowlGameWithFile(strikeNotTheLastInputFilePath);
 
         // When
         int actualScores = bowlingGame.calculateTotalLinesScore();
@@ -63,5 +62,50 @@ public class BowlingGameTest {
 
         // Then
         assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_throws_contains_strike_in_the_last_line() {
+        // Given
+        initBowlGameWithFile(strikeInTheLastInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 102;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_throws_contains_continuous_strikes() {
+        // Given
+        initBowlGameWithFile(strikeContinuousInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 125;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_pins_are_all_down() {
+        // Given
+        initBowlGameWithFile(pinsAllDownInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 300;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    private void initBowlGameWithFile(String filePath) {
+        List<List<Integer>> downPinsList = BowlInputFileReader.readDownPinsListFromFile(filePath);
+        // System.out.println(BowlInputFileReader.outputDebug(downPinsListStrikeInTheLast));
+        bowlingGame = new BowlingGame(gameRule, downPinsList);
     }
 }
