@@ -13,6 +13,9 @@ public class BowlingGameTest {
     private final String strikeInTheLastInputFilePath = "src/test/java/data/strike_in_the_last.txt";
     private final String strikeContinuousInputFilePath = "src/test/java/data/strike_continuous.txt";
     private final String pinsAllDownInputFilePath = "src/test/java/data/all_pins_down.txt";
+    private final String spareNotTheLastInputFilePath = "src/test/java/data/spare_not_the_last.txt";
+    private final String spareContinuousInputFilePath = "src/test/java/data/spare_continuous.txt";
+    private final String spareInTheLastInputFilePath = "src/test/java/data/spare_in_the_last.txt";
 
     BowlingGame bowlingGame;
     GameRule gameRule = new NormalGameRule();
@@ -52,7 +55,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    public void when_throws_contains_strike_not_contains_spare() {
+    public void when_throws_contain_strike_not_contains_spare() {
         // Given
         initBowlGameWithFile(strikeNotTheLastInputFilePath);
 
@@ -65,7 +68,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    public void when_throws_contains_strike_in_the_last_line() {
+    public void when_throws_contain_strike_in_the_last_line() {
         // Given
         initBowlGameWithFile(strikeInTheLastInputFilePath);
 
@@ -78,7 +81,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    public void when_throws_contains_continuous_strikes() {
+    public void when_throws_contain_continuous_strikes() {
         // Given
         initBowlGameWithFile(strikeContinuousInputFilePath);
 
@@ -98,6 +101,45 @@ public class BowlingGameTest {
         // When
         int actualScores = bowlingGame.calculateTotalLinesScore();
         int expectScores = 300;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_throws_contain_spare_without_strike() {
+        // Given
+        initBowlGameWithFile(spareNotTheLastInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 87;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_throws_contain_continuous_spares() {
+        // Given
+        initBowlGameWithFile(spareContinuousInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 113;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_throws_contain_spare_in_the_last_line() {
+        // Given
+        initBowlGameWithFile(spareInTheLastInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 89;
 
         // Then
         assertEquals(actualScores, expectScores);

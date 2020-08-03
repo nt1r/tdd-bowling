@@ -7,16 +7,16 @@ public class NormalGameRule extends GameRule {
 
     @Override
     public int getLineScore(BowlingLine bowlingLine) {
-        if (bowlingLine.isStrike(MAX_PINS_PER_LINE)) {
-            if (isBowlingLineHasExtendThrow(bowlingLine)) {
-                return sumLinesDownPins(bowlingLine);
-            } else {
-                return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextTwoThrowsScores(MAX_PINS_PER_LINE);
-            }
-        } else if (bowlingLine.isSpare(MAX_PINS_PER_LINE)) {
-            return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextThrowScore();
-        } else {
+        if (isBowlingLineHasExtendThrow(bowlingLine)) {
             return sumLinesDownPins(bowlingLine);
+        } else {
+            if (bowlingLine.isStrike(MAX_PINS_PER_LINE)) {
+                return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextTwoThrowsScores(MAX_PINS_PER_LINE);
+            } else if (bowlingLine.isSpare(MAX_PINS_PER_LINE)) {
+                return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextThrowScore();
+            } else {
+                return sumLinesDownPins(bowlingLine);
+            }
         }
     }
 
