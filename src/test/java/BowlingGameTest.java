@@ -16,6 +16,7 @@ public class BowlingGameTest {
     private final String spareNotTheLastInputFilePath = "src/test/java/data/spare_not_the_last.txt";
     private final String spareContinuousInputFilePath = "src/test/java/data/spare_continuous.txt";
     private final String spareInTheLastInputFilePath = "src/test/java/data/spare_in_the_last.txt";
+    private final String mixedStrikeAndSpareInputFilePath = "src/test/java/data/mix_strike_and_spare.txt";
 
     BowlingGame bowlingGame;
     GameRule gameRule = new NormalGameRule();
@@ -140,6 +141,19 @@ public class BowlingGameTest {
         // When
         int actualScores = bowlingGame.calculateTotalLinesScore();
         int expectScores = 89;
+
+        // Then
+        assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void when_throws_contains_both_spare_and_strike() {
+        // Given
+        initBowlGameWithFile(mixedStrikeAndSpareInputFilePath);
+
+        // When
+        int actualScores = bowlingGame.calculateTotalLinesScore();
+        int expectScores = 174;
 
         // Then
         assertEquals(actualScores, expectScores);
