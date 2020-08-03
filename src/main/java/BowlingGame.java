@@ -8,16 +8,20 @@ public class BowlingGame {
 
     public BowlingGame(GameRule rule, List<List<Integer>> downPinsList) {
         this.rule = rule;
+        AddLinesFromDownPinsList(downPinsList);
+        setNextPointer();
+    }
 
+    private void AddLinesFromDownPinsList(List<List<Integer>> downPinsList) {
         for (List<Integer> downPins : downPinsList) {
-            lineList.add(new BowlingLine(downPins));
+            lineList.add(new BowlingLine(downPins, rule.MAX_PINS_PER_LINE, rule.MAX_THROWS_PER_LINE));
         }
+    }
 
-        /* set next pointer in 'BowlingLine' */
+    private void setNextPointer() {
         for (int index = 0; index < lineList.size() - 1; ++index) {
             lineList.get(index).setNextLine(lineList.get(index + 1));
         }
-        /* set next pointer in 'BowlingLine' */
     }
 
     public int calculateTotalLinesScore() {

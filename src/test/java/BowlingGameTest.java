@@ -5,6 +5,7 @@ import util.BowlInputFileReader;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BowlingGameTest {
     private final String allThrowZerosInputFilePath = "src/test/java/data/all_throw_zeros.txt";
@@ -17,6 +18,7 @@ public class BowlingGameTest {
     private final String spareContinuousInputFilePath = "src/test/java/data/spare_continuous.txt";
     private final String spareInTheLastInputFilePath = "src/test/java/data/spare_in_the_last.txt";
     private final String mixedStrikeAndSpareInputFilePath = "src/test/java/data/mix_strike_and_spare.txt";
+    private final String invalidInputFilePath = "src/test/java/data/invalid.txt";
 
     BowlingGame bowlingGame;
     GameRule gameRule = new NormalGameRule();
@@ -157,6 +159,17 @@ public class BowlingGameTest {
 
         // Then
         assertEquals(actualScores, expectScores);
+    }
+
+    @Test
+    public void should_throw_exception_when_input_file_invalid() {
+        // Then
+        assertThrows(RuntimeException.class, () -> {
+            // Given
+            initBowlGameWithFile(invalidInputFilePath);
+            // When
+            bowlingGame.calculateTotalLinesScore();
+        });
     }
 
     private void initBowlGameWithFile(String filePath) {

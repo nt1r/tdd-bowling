@@ -10,9 +10,9 @@ public class NormalGameRule extends GameRule {
         if (isBowlingLineHasExtendThrow(bowlingLine)) {
             return sumLinesDownPins(bowlingLine);
         } else {
-            if (bowlingLine.isStrike(MAX_PINS_PER_LINE)) {
-                return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextTwoThrowsScores(MAX_PINS_PER_LINE);
-            } else if (bowlingLine.isSpare(MAX_PINS_PER_LINE)) {
+            if (bowlingLine.isStrike()) {
+                return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextTwoThrowsScores();
+            } else if (bowlingLine.isSpare()) {
                 return MAX_PINS_PER_LINE + bowlingLine.getNextLine().requireNextThrowScore();
             } else {
                 return sumLinesDownPins(bowlingLine);
